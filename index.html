@@ -6,33 +6,27 @@
   <title>Certificate Verification - Newcastle College Ltd</title>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-    :root{--brand:#003366;--accent:#00509e}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:#f5f9ff;color:#012f6b;min-height:100vh;display:flex;flex-direction:column}
-    header{background:var(--brand);color:#fff;padding:1rem 1.5rem;text-align:center}
-    main{max-width:900px;margin:1.5rem auto;padding:1.5rem;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(2,17,55,.06)}
-    h1,h2{margin:.25rem 0}
-    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:1rem 0}
-    input[type=text]{width:100%;padding:.6rem;border:1.5px solid var(--brand);border-radius:8px}
-    button{font:inherit}
-    .primary{background:var(--brand);color:#fff;border:none;padding:.65rem 1rem;border-radius:8px;cursor:pointer}
-    .ghost{background:#fff;border:1px solid #dbe8ff;color:var(--brand);padding:.5rem .8rem;border-radius:8px;cursor:pointer}
-    #reader{display:none;margin:1rem auto;max-width:420px;border:3px solid var(--accent);border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#000}
-    #status{margin-top:.5rem}
-    .verified{background:#e6f9ec;border:1px solid #2e7d32;color:#1f5f2f;padding:1rem;border-radius:8px}
-    .notfound{background:#fff1f1;border:1px solid #c62828;color:#8a1e1e;padding:1rem;border-radius:8px}
-    #admin-panel{display:none;margin-top:1rem;padding:1rem;border-radius:10px;border:2px dashed #dbe8ff;background:#fff}
-    table{width:100%;border-collapse:collapse;margin-top:.75rem}
-    th,td{padding:.5rem;border:1px solid #e6eef8;text-align:left}
-    th{background:#f3f8ff}
-    .small{font-size:.9rem}
-    .muted{color:#556;font-size:.9rem}
-    .flex{display:flex;gap:.5rem;align-items:center}
-    .qr-preview img{max-width:180px;border-radius:8px;border:1px solid #e6eef8}
-    footer{background:#012f6b;color:#fff;padding:.8rem;text-align:center;margin-top:1.5rem}
-    .gov-cred { font-size:0.9rem; color:#bfe; opacity:0.95; margin-top:6px }
-  </style>
+   /* Header layout for logo + title + UKRLP badge */.brandbar{
+  max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+}
+.brand-left{display:flex;align-items:center;gap:12px}
+.brand-left img.logo{height:42px;width:auto;display:block}
+.brand-title{font-size:1.22rem;font-weight:600;line-height:1.2}
+.brand-right img{height:36px;width:auto;display:block;opacity:.95}
+
+/* Footer partner strip */
+.partners-wrap{max-width:1100px;margin:0 auto;padding:14px 12px}
+.partners{
+  background:#0c2b57;border-radius:10px;padding:10px;
+  display:flex;justify-content:center;align-items:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.15)
+}
+.partners img{display:block;max-width:100%;height:auto}
+.copyright{max-width:1100px;margin:0 auto;padding:10px 12px;text-align:center;font-size:.95rem;opacity:.95}
+
+/* Keep footer at bottom on short pages */
+footer{ margin-top:auto; }</style>
 
   <!-- QR libraries - place before our script block so Html5Qrcode is available -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
