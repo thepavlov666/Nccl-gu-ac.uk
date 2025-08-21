@@ -6,33 +6,83 @@
   <title>Certificate Verification - Newcastle College Ltd</title>
 
   <style>
-   /* Header layout for logo + title + UKRLP badge */.brandbar{
-  max-width:1100px;margin:0 auto;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.brand-left{display:flex;align-items:center;gap:12px}
-.brand-left img.logo{height:42px;width:auto;display:block}
-.brand-title{font-size:1.22rem;font-weight:600;line-height:1.2}
-.brand-right img{height:36px;width:auto;display:block;opacity:.95}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    :root{--brand:#003366;--accent:#00509e}
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;
+      background:#f5f9ff;color:#012f6b;
+      min-height:100vh;display:flex;flex-direction:column
+    }
 
-/* Footer partner strip */
-.partners-wrap{max-width:1100px;margin:0 auto;padding:14px 12px}
-.partners{
-  background:#0c2b57;border-radius:10px;padding:10px;
-  display:flex;justify-content:center;align-items:center;
-  box-shadow:0 4px 14px rgba(0,0,0,.15)
-}
-.partners img{display:block;max-width:100%;height:auto}
-.copyright{max-width:1100px;margin:0 auto;padding:10px 12px;text-align:center;font-size:.95rem;opacity:.95}
+    /* ===== Header / branding ===== */
+    header{background:var(--brand);color:#fff;padding:1rem 1.2rem}
+    .brandbar{
+      max-width:1100px;margin:0 auto;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .brand-left{display:flex;align-items:center;gap:12px}
+    .brand-left img.logo{height:50px;width:auto;display:block}
+    .brand-title{font-size:1.2rem;font-weight:600;line-height:1.2}
+    .brand-right img{height:40px;width:auto;display:block;opacity:.95}
+    .gov-cred{font-size:.9rem;color:#bfe;opacity:.95;margin-top:6px;text-align:center}
 
-/* Keep footer at bottom on short pages */
-footer{ margin-top:auto; }</style>
+    /* ===== Main card ===== */
+    main{
+      max-width:900px;margin:1.5rem auto;padding:1.5rem;background:#fff;
+      border-radius:10px;box-shadow:0 8px 24px rgba(2,17,55,.06)
+    }
+    h1,h2{margin:.25rem 0}
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:1rem 0}
+    input[type=text]{width:100%;padding:.6rem;border:1.5px solid var(--brand);border-radius:8px}
+    button{font:inherit}
+    .primary{background:var(--brand);color:#fff;border:none;padding:.65rem 1rem;border-radius:8px;cursor:pointer}
+    .ghost{background:#fff;border:1px solid #dbe8ff;color:var(--brand);padding:.5rem .8rem;border-radius:8px;cursor:pointer}
+    #reader{display:none;margin:1rem auto;max-width:420px;border:3px solid var(--accent);border-radius:12px;overflow:hidden;aspect-ratio:1/1;background:#000}
+    #status{margin-top:.5rem}
+    .verified{background:#e6f9ec;border:1px solid #2e7d32;color:#1f5f2f;padding:1rem;border-radius:8px}
+    .notfound{background:#fff1f1;border:1px solid #c62828;color:#8a1e1e;padding:1rem;border-radius:8px}
+    #admin-panel{display:none;margin-top:1rem;padding:1rem;border-radius:10px;border:2px dashed #dbe8ff;background:#fff}
+    table{width:100%;border-collapse:collapse;margin-top:.75rem}
+    th,td{padding:.5rem;border:1px solid #e6eef8;text-align:left}
+    th{background:#f3f8ff}
+    .small{font-size:.9rem}
+    .muted{color:#556;font-size:.9rem}
+    .flex{display:flex;gap:.5rem;align-items:center}
+    .qr-preview img{max-width:180px;border-radius:8px;border:1px solid #e6eef8}
 
-  <!-- QR libraries - place before our script block so Html5Qrcode is available -->
+    /* ===== Footer ===== */
+    footer{margin-top:auto;background:#012f6b;color:#fff}
+    .partners-wrap{max-width:1100px;margin:0 auto;padding:14px 12px}
+    .partners{
+      background:#0c2b57;border-radius:10px;padding:10px;
+      display:flex;justify-content:center;align-items:center;
+      box-shadow:0 4px 14px rgba(0,0,0,.15)
+    }
+    .partners img{display:block;max-width:100%;height:auto}
+    .copyright{max-width:1100px;margin:0 auto;padding:10px 12px;text-align:center;font-size:.95rem;opacity:.95}
+
+    /* ===== Responsive tweaks ===== */
+    @media (max-width: 768px){
+      .brandbar{flex-direction:column;gap:10px}
+      .brand-left{justify-content:center;text-align:center}
+      .brand-left img.logo{height:44px}
+      .brand-title{font-size:1.08rem}
+      .brand-right img{height:32px}
+    }
+    @media (max-width: 480px){
+      .brand-left img.logo{height:38px}
+      .brand-title{font-size:1rem}
+      .brand-right img{height:28px}
+    }
+  </style>
+
+  <!-- QR libraries -->
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
 </head>
 <body>
+  <!-- Header with college logo (left) + UKRLP mark (right) -->
   <header>
     <div class="brandbar">
       <div class="brand-left">
@@ -40,7 +90,7 @@ footer{ margin-top:auto; }</style>
         <div class="brand-title">Newcastle College Ltd — Certificate Verification</div>
       </div>
       <div class="brand-right">
-        <img src="ukrlp.png" alt="UKRLP Verified Provider"> 
+        <img src="ukrlp.png" alt="UKRLP Verified Provider">
       </div>
     </div>
     <div class="gov-cred">Verified provider — UK Register of Learning Providers (UKRLP) &amp; regulated by OFQUAL</div>
@@ -76,7 +126,10 @@ footer{ margin-top:auto; }</style>
       </div>
 
       <div style="margin-top:.5rem;overflow:auto;max-height:320px">
-        <table id="certTable"><thead><tr><th>QualificationNumber</th><th>Name</th><th>Level</th><th>AwardedBy</th><th>Year</th><th>Actions</th></tr></thead><tbody></tbody></table>
+        <table id="certTable">
+          <thead><tr><th>QualificationNumber</th><th>Name</th><th>Level</th><th>AwardedBy</th><th>Year</th><th>Actions</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
 
       <h4 style="margin-top:.8rem">Add New Certificate</h4>
@@ -86,13 +139,17 @@ footer{ margin-top:auto; }</style>
         <input name="Level" placeholder="Level" style="margin-top:.5rem" />
         <input name="AwardedBy" placeholder="Awarded By" style="margin-top:.5rem" />
         <input name="Year" placeholder="Year" style="margin-top:.5rem" />
-        <div style="display:flex;gap:.5rem;margin-top:.6rem"><button type="submit" class="primary">Add & Generate QR</button><button type="button" id="hideAdmin" class="ghost">Close</button></div>
+        <div style="display:flex;gap:.5rem;margin-top:.6rem">
+          <button type="submit" class="primary">Add & Generate QR</button>
+          <button type="button" id="hideAdmin" class="ghost">Close</button>
+        </div>
       </form>
 
       <div id="qrCodeContainer" class="qr-preview" style="margin-top:.75rem"></div>
     </div>
   </main>
 
+  <!-- Footer with partner strip -->
   <footer>
     <div class="partners-wrap">
       <div class="partners">
@@ -105,7 +162,6 @@ footer{ margin-top:auto; }</style>
   <script>
   // =========== CONFIG ===========
   const ADMIN_PASSWORD = 'sex126';
-  // Use your live Google Apps Script (\u002Fexec):
   const BACKEND_URL = 'https://script.google.com/macros/s/AKfycbzB_vRfANEVur2waJsrYSIZAK4lVE9aFA2h4loANrtCWJloLS75HtK2_XtM9vncQgUnfQ/exec';
   // ==============================
 
@@ -197,7 +253,9 @@ footer{ margin-top:auto; }</style>
       <b>Year:</b> ${escapeHtml(rec.Year||'')}
       </div>`;
   }
-  function renderNotFound(){ statusEl.innerHTML = `<div class="notfound">❌ <strong>NOT FOUND</strong><br>The qualification number or candidate name appears invalid or unregistered.</div>` }
+  function renderNotFound(){
+    statusEl.innerHTML = `<div class="notfound">❌ <strong>NOT FOUND</strong><br>The qualification number or candidate name appears invalid or unregistered.</div>`;
+  }
 
   document.getElementById('verifyForm').addEventListener('submit', async (ev)=>{ ev.preventDefault(); await verifyQualification(); });
 
@@ -294,8 +352,15 @@ footer{ margin-top:auto; }</style>
   }
 
   function stopScanner(){
-    if(!scanner){ readerEl.style.display = 'none'; stopBtn.style.display = 'none'; startBtn.disabled = false; return; }
-    scanner.stop().then(()=>{ scanner.clear(); scanner = null; readerEl.style.display='none'; stopBtn.style.display='none'; startBtn.disabled=false; }).catch(()=>{ scanner=null; readerEl.style.display='none'; stopBtn.style.display='none'; startBtn.disabled=false; });
+    if(!scanner){
+      readerEl.style.display = 'none'; stopBtn.style.display = 'none'; startBtn.disabled = false; return;
+    }
+    scanner.stop().then(()=>{
+      scanner.clear(); scanner = null;
+      readerEl.style.display='none'; stopBtn.style.display='none'; startBtn.disabled=false;
+    }).catch(()=>{
+      scanner=null; readerEl.style.display='none'; stopBtn.style.display='none'; startBtn.disabled=false;
+    });
   }
 
   stopBtn.addEventListener('click', stopScanner);
@@ -331,7 +396,7 @@ footer{ margin-top:auto; }</style>
         const delBtn = document.createElement('button'); delBtn.textContent='🗑️'; delBtn.className='ghost';
         delBtn.addEventListener('click', ()=>deleteCertificate(r.QualificationNumber, r.Name));
         const qrBtn = document.createElement('button'); qrBtn.textContent='📥 QR'; qrBtn.className='ghost'; qrBtn.style.marginLeft='8px';
-        qrBtn.addEventListener('click', ()=>generateQRCodeForPrinting(r.QualificationNumber, r.Name));
+        qrBtn.addEventListener('click', ()=>generateQRCodeForPrinting(r.QualificationNumber));
         actionsCell.appendChild(delBtn); actionsCell.appendChild(qrBtn);
         tbody.appendChild(tr);
       });
@@ -340,19 +405,6 @@ footer{ margin-top:auto; }</style>
       tbody.innerHTML = '<tr><td colspan="6">Error loading records.</td></tr>';
     }
   }
-
-  document.getElementById('refreshListBtn').addEventListener('click', fetchCertificates);
-  document.getElementById('hideAdmin').addEventListener('click', ()=>{ document.getElementById('admin-panel').style.display='none' });
-
-  document.getElementById('addCertForm').addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const rec = {}; fd.forEach((v,k) => rec[k] = String(v||'').trim());
-    if(!rec.QualificationNumber || !rec.Name){ alert('Qualification Number and Name required'); return; }
-    const added = await backendAdd(rec);
-    if(added && added.ok){ alert('Certificate added to backend'); e.target.reset(); fetchCertificates(); }
-    else { alert('Added locally (backend unavailable)'); e.target.reset(); fetchCertificates(); }
-  });
 
   async function deleteCertificate(q,n){
     if(!confirm(`Delete ${n} (${q})?`)) return;
