@@ -436,6 +436,133 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
 
   // Boot
   (async ()=>{ await backendList(); await autoVerifyFromQuery(); })();
-  </script>
+  </script><script>
+// ===== Admin: Add / Refresh / Close handlers =====
+
+// Add New Certificate
+(() => {
+  const addForm = document.getElementById('addCertForm');
+  if (!addForm) return;
+
+  addForm.addEventListener('submit', async (e) => {
+    e.preventDefault();               // <-- stop page reload
+
+    const fd = new FormData(addForm);
+    const record = {
+      QualificationNumber: (fd.get('QualificationNumber') || '').trim(),
+      Name: (fd.get('Name') || '').trim(),
+      Level: (fd.get('Level') || '').trim(),
+      AwardedBy: (fd.get('AwardedBy') || '').trim(),
+      Year: (fd.get('Year') || '').trim(),
+    };
+
+    if (!record.QualificationNumber || !record.Name) {
+      alert('Qualification Number and Name are required.');
+      return;
+    }
+
+    try {
+      const res = await backendAdd(record);
+      if (res && res.ok) {
+        alert('Certificate added.');
+      } else if (res && res.local) {
+        alert('Backend unavailable — saved locally for now.');
+      } else {
+        alert('Could not add certificate.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Unexpected error adding certificate.');
+    }
+
+    // Refresh table + show QR for the new ID
+    try { await fetchCertificates(); } catch {}
+    try { generateQRCodeForPrinting(record.QualificationNumber); } catch {}
+
+    addForm.reset();
+  });
+
+  // Refresh list
+  const refreshBtn = document.getElementById('refreshListBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      try { await fetchCertificates(); } catch (e) { console.error(e); }
+    });
+  }
+
+  // Close admin panel
+  const hideAdminBtn = document.getElementById('hideAdmin');
+  if (hideAdminBtn) {
+    hideAdminBtn.addEventListener('click', () => {
+      document.getElementById('admin-panel').style.display = 'none';
+    });
+  }
+})();
+<script>
+// ===== Admin: Add / Refresh / Close handlers =====
+
+// Add New Certificate
+(() => {
+  const addForm = document.getElementById('addCertForm');
+  if (!addForm) return;
+
+  addForm.addEventListener('submit', async (e) => {
+    e.preventDefault();               // <-- stop page reload
+
+    const fd = new FormData(addForm);
+    const record = {
+      QualificationNumber: (fd.get('QualificationNumber') || '').trim(),
+      Name: (fd.get('Name') || '').trim(),
+      Level: (fd.get('Level') || '').trim(),
+      AwardedBy: (fd.get('AwardedBy') || '').trim(),
+      Year: (fd.get('Year') || '').trim(),
+    };
+
+    if (!record.QualificationNumber || !record.Name) {
+      alert('Qualification Number and Name are required.');
+      return;
+    }
+
+    try {
+      const res = await backendAdd(record);
+      if (res && res.ok) {
+        alert('Certificate added.');
+      } else if (res && res.local) {
+        alert('Backend unavailable — saved locally for now.');
+      } else {
+        alert('Could not add certificate.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Unexpected error adding certificate.');
+    }
+
+    // Refresh table + show QR for the new ID
+    try { await fetchCertificates(); } catch {}
+    try { generateQRCodeForPrinting(record.QualificationNumber); } catch {}
+
+    addForm.reset();
+  });
+
+  // Refresh list
+  const refreshBtn = document.getElementById('refreshListBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      try { await fetchCertificates(); } catch (e) { console.error(e); }
+    });
+  }
+
+  // Close admin panel
+  const hideAdminBtn = document.getElementById('hideAdmin');
+  if (hideAdminBtn) {
+    hideAdminBtn.addEventListener('click', () => {
+      document.getElementById('admin-panel').style.display = 'none';
+    });
+  }
+})();
+</script>
+
+    </script>
+
 </body>
 </html>
