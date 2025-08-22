@@ -110,7 +110,8 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
 
     <div id="reader" aria-hidden="true"></div>
 
-    <form id="verifyForm" autocomplete="off">
+    <!-- Added onSubmit="return false;" as a no-navigation safety net -->
+    <form id="verifyForm" autocomplete="off" onsubmit="return false;">
       <label class="small">Qualification Number</label>
       <input type="text" id="qualificationNumber" placeholder="e.g. NC-2025-001234" />
       <label class="small" style="margin-top:.5rem">Candidate Name</label>
@@ -136,7 +137,8 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
       </div>
 
       <h4 style="margin-top:.8rem">Add New Certificate</h4>
-      <form id="addCertForm">
+      <!-- Added onSubmit="return false;" here as well -->
+      <form id="addCertForm" onsubmit="return false;">
         <input name="QualificationNumber" placeholder="Qualification Number" required style="margin-top:.5rem" />
         <input name="Name" placeholder="Name" required style="margin-top:.5rem" />
         <input name="Level" placeholder="Level" style="margin-top:.5rem" />
@@ -260,7 +262,10 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
     statusEl.innerHTML = `<div class="notfound">❌ <strong>NOT FOUND</strong><br>The qualification number or candidate name appears invalid or unregistered.</div>`;
   }
 
-  document.getElementById('verifyForm').addEventListener('submit', async (ev)=>{ ev.preventDefault(); await verifyQualification(); });
+  document.getElementById('verifyForm').addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
+    await verifyQualification();
+  });
 
   async function verifyQualification(){
     const qual = document.getElementById('qualificationNumber').value.trim();
@@ -274,18 +279,29 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
     if(found) renderVerified(found); else renderNotFound();
   }
 
-  // Auto-verify if ?cert=ID present
+  // Auto-verify if query params present
   function getQueryParam(name){
     const url = new URL(window.location.href);
     return url.searchParams.get(name);
   }
   async function autoVerifyFromQuery(){
-    const certId = getQueryParam('cert') || getQueryParam('q') || getQueryParam('id');
-    if(!certId) return;
+    // Accept both short (?cert=) and full form submissions (?QualificationNumber=...&Name=...)
+    const certId = getQueryParam('cert') || getQueryParam('q') || getQueryParam('id') || getQueryParam('QualificationNumber');
+    const nameParam = getQueryParam('Name');
+
+    if(!certId && !nameParam) return;
+
     loadingEl.style.display = 'block';
     const records = await backendList();
     loadingEl.style.display = 'none';
-    const found = records.find(r => textEqual(r.QualificationNumber, certId));
+
+    let found = null;
+    if(certId && nameParam){
+      found = records.find(r => textEqual(r.QualificationNumber, certId) && textEqual(r.Name, nameParam));
+    } else if (certId){
+      found = records.find(r => textEqual(r.QualificationNumber, certId));
+    }
+
     if(found){
       document.getElementById('qualificationNumber').value = found.QualificationNumber;
       document.getElementById('name').value = found.Name;
@@ -437,7 +453,7 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
   // Boot
   (async ()=>{ await backendList(); await autoVerifyFromQuery(); })();
 
-  /* ====== ADDED: Admin Add/Refresh/Close handlers (prevents form reload) ====== */
+  /* ====== Admin Add/Refresh/Close handlers ====== */
   (() => {
     const addForm = document.getElementById('addCertForm');
     if (addForm) {
@@ -494,7 +510,8 @@ footer{margin-top:auto;background:#1D2E59;color:#fff}
       });
     }
   })();
-  /* ====== /ADDED ====== */
+  /* ====== /Admin handlers ====== */
   </script>
 </body>
 </html>
+
